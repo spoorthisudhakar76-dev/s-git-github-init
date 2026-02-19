@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f2f2f2;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 8px;
+            background: #2b7bff;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1a5edb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .captcha {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <form id="form">
+        <!-- Always Visible -->
+        <input type="text" id="input1" placeholder="First Input">
+        <input type="text" id="input2" placeholder="Second Input">
+
+        <!-- Hidden Initially -->
+        <div id="extraSection" class="hidden">
+            <div class="captcha" id="captchaText"></div>
+            <input type="text" id="input3" placeholder="Third Input">
+            <input type="text" id="captchaInput" placeholder="Enter Captcha">
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById("form");
+    const extraSection = document.getElementById("extraSection");
+    const captchaText = document.getElementById("captchaText");
+    const captchaInput = document.getElementById("captchaInput");
+
+    let firstSubmit = true;
+    let answer = 0;
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault(); // stop page reload
+
+        if (firstSubmit) {
+            // Show captcha + third input
+            let num1 = Math.floor(Math.random() * 10) + 1;
+            let num2 = Math.floor(Math.random() * 10) + 1;
+            answer = num1 + num2;
+
+            captchaText.innerText = "Captcha: What is " + num1 + " + " + num2 + " ?";
+            extraSection.classList.remove("hidden");
+
+            firstSubmit = false;
+        } else {
+            // Validate captcha
+            if (parseInt(captchaInput.value) === answer) {
+                alert("Submitted successfully");
+            } else {
+                alert("Invalid captcha");
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
